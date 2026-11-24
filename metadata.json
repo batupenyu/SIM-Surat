@@ -1,0 +1,6 @@
+{
+  "name": "TataSurat — Sistem Persuratan Digital Real-Time",
+  "description": "Platform persuratan digital terpadu untuk registrasi, disposisi, dan pelacakan posisi surat masuk serta surat keluar secara real-time.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

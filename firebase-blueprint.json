@@ -1,0 +1,317 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Private authenticated staff profile with isolated PII.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Firebase Auth UID matching the document ID."
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Staff member display name."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 200,
+          "description": "Staff email address (PII, owner/admin read only)."
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Assigned organizational unit or department."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["staff"],
+          "description": "Standard user role assigned at registration."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server last update timestamp."
+        }
+      },
+      "required": ["uid", "displayName", "email", "unit", "role", "createdAt", "updatedAt"]
+    },
+    "Letter": {
+      "title": "Letter",
+      "description": "Incoming or outgoing official correspondence record tracked in real-time.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of the staff member who registered the letter."
+        },
+        "collaboratorUids": {
+          "type": "array",
+          "description": "Bounded list of up to 20 collaborator UIDs permitted to view and track this letter."
+        },
+        "trackingCode": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 32,
+          "pattern": "^[A-Z0-9\\-]+$",
+          "description": "Unique tracking code for instant lookup."
+        },
+        "direction": {
+          "type": "string",
+          "enum": ["masuk", "keluar"],
+          "description": "Whether the letter is incoming (masuk) or outgoing (keluar)."
+        },
+        "letterNumber": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Official letter reference number."
+        },
+        "agendaNumber": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "Internal agenda registry number."
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240,
+          "description": "Letter subject or perihal."
+        },
+        "sender": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160,
+          "description": "Originating institution or sender name."
+        },
+        "recipient": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160,
+          "description": "Target institution or recipient name."
+        },
+        "originUnit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Originating or registering unit."
+        },
+        "currentUnit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Current unit holding or processing the letter."
+        },
+        "letterDate": {
+          "type": "string",
+          "maxLength": 20,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "description": "Date written on the letter (YYYY-MM-DD)."
+        },
+        "receivedOrSentDate": {
+          "type": "string",
+          "maxLength": 20,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "description": "Date received or dispatched (YYYY-MM-DD)."
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["Biasa", "Penting", "Segera", "Rahasia"],
+          "description": "Urgency or confidentiality level."
+        },
+        "classification": {
+          "type": "string",
+          "enum": ["Umum", "Undangan", "Keputusan", "Keuangan", "Kepegawaian", "Nota Dinas"],
+          "description": "Correspondence category."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Terdaftar", "Diproses", "Didisposisikan", "Terkirim", "Diterima", "Selesai", "Diarsipkan"],
+          "description": "Current real-time lifecycle status of the letter."
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 2000,
+          "description": "Brief summary of letter contents."
+        },
+        "attachmentUrl": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Optional external document link."
+        },
+        "uploadedFileName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Original filename of uploaded PDF or Word correspondence document."
+        },
+        "uploadedFileUrl": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Authenticated API path to retrieve the uploaded document."
+        },
+        "uploadedFileMime": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "MIME type of the uploaded PDF or Word document."
+        },
+        "assignedToName": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "Current person-in-charge name."
+        },
+        "createdByName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Display name of the registering staff."
+        },
+        "eventCount": {
+          "type": "integer",
+          "description": "Total number of tracking events logged."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server last update timestamp."
+        }
+      },
+      "required": [
+        "ownerId",
+        "collaboratorUids",
+        "trackingCode",
+        "direction",
+        "letterNumber",
+        "agendaNumber",
+        "subject",
+        "sender",
+        "recipient",
+        "originUnit",
+        "currentUnit",
+        "letterDate",
+        "receivedOrSentDate",
+        "priority",
+        "classification",
+        "status",
+        "summary",
+        "attachmentUrl",
+        "assignedToName",
+        "createdByName",
+        "eventCount",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "TrackingEvent": {
+      "title": "TrackingEvent",
+      "description": "Immutable real-time audit trail entry for a correspondence movement or disposition.",
+      "type": "object",
+      "properties": {
+        "letterId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Parent letter document ID."
+        },
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Parent letter owner UID."
+        },
+        "collaboratorUids": {
+          "type": "array",
+          "description": "Bounded collaborator UIDs mirrored from parent letter."
+        },
+        "actorUid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of the staff member who logged the event."
+        },
+        "actorName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Display name of the acting staff member."
+        },
+        "actionType": {
+          "type": "string",
+          "enum": ["Registrasi", "Verifikasi", "Disposisi", "Pengiriman", "Penerimaan", "Tindak Lanjut", "Selesai", "Arsip"],
+          "description": "Action classification."
+        },
+        "fromUnit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Unit handing off the letter."
+        },
+        "toUnit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Unit receiving the letter."
+        },
+        "statusAfter": {
+          "type": "string",
+          "enum": ["Terdaftar", "Diproses", "Didisposisikan", "Terkirim", "Diterima", "Selesai", "Diarsipkan"],
+          "description": "Letter status resulting from this event."
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Disposition instruction or movement remarks."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when event occurred."
+        }
+      },
+      "required": [
+        "letterId",
+        "ownerId",
+        "collaboratorUids",
+        "actorUid",
+        "actorName",
+        "actionType",
+        "fromUnit",
+        "toUnit",
+        "statusAfter",
+        "note",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private staff profile documents keyed by Auth UID."
+    },
+    "/letters/{letterId}": {
+      "schema": { "$ref": "#/entities/Letter" },
+      "description": "Top-level correspondence registry documents."
+    },
+    "/letters/{letterId}/trackingEvents/{eventId}": {
+      "schema": { "$ref": "#/entities/TrackingEvent" },
+      "description": "Chronological real-time tracking and disposition logs for a letter."
+    }
+  }
+}
